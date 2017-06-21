@@ -1,4 +1,4 @@
-package BigData.KnowledgeGraphAlgebra;
+package Big.JSON;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
