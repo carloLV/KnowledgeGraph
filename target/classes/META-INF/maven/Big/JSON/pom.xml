@@ -2,12 +2,12 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>BigData</groupId>
-  <artifactId>KnowledgeGraphAlgebra</artifactId>
+  <groupId>Big</groupId>
+  <artifactId>JSON</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>KnowledgeGraphAlgebra</name>
+  <name>JSON</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -15,6 +15,21 @@
   </properties>
 
   <dependencies>
+  <dependency>
+    <groupId>com.googlecode.json-simple</groupId>
+    	<artifactId>json-simple</artifactId>
+    	<version>1.1</version>
+	</dependency>
+   	<dependency>
+   		 <groupId>org.apache.commons</groupId>
+   		 <artifactId>commons-lang3</artifactId>
+   		 <version>3.0</version>
+  	</dependency>
+  <dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20170516</version>
+   </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

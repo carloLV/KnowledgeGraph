@@ -30,8 +30,11 @@ local.properties
 .recommenders
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-<<<<<<< HEAD
 hs_err_pid*
-=======
-hs_err_pid*
->>>>>>> bb0a4d39d24bdb1959dcede17d6a41188314b707
+
+#MAC ignore
+.DS_Store
+
+#MAVEN ignore
+log/
+target/
