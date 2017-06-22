@@ -18,16 +18,8 @@ public class Neo4jTest {
 	"RETURN i.interestID";
 			//+ " CREATE (i:Interest {id: interest.interestID})";
 			//+ " SET i.interesse = interest.interesse";
-	/*//Path to our db between ""
-	public static final File DB_PATH=new File("");
-
-	//Some variables we need
-	GraphDatabaseService graphDb;
-	Node firstNode;
-	Node secondNode;
-	Relationship relationship;
-
-	//Creates the relations
+	
+	/*Creates the relations
 	private static enum RelTypes implements RelationshipType
 	{
 	    KNOWS
