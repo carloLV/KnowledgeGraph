@@ -1,4 +1,4 @@
-package jsonExtractModels;
+package jsonManagerModels;
 
 /* Questa classe modella le Entità che formano i nodi del grafo. Ogni entità è formata
  * da un ID e dall'insieme degli attributi.
