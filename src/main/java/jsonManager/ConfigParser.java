@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -36,7 +37,7 @@ public class ConfigParser {
 	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> relations;
 
 	private static final String confPath="/home/bum-bum/Desktop/jsonConfig.txt";
-	private static final String jsonPath="/home/bum-bum/Desktop/demo.txt";
+	private static final String jsonPath="/home/bum-bum/Desktop/docs.txt";
 
 	public ConfigParser(){
 		this.relations = new LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> >();
@@ -59,9 +60,9 @@ public class ConfigParser {
 
 			//This list has in pos 0 the json field that represents the key (could be nested); the other field are the attributes
 			ArrayList<String> keyToExtract = new ArrayList<String>();
-			keyToExtract.add(key.split(",")[0].split(":")[1]);
+			keyToExtract.add(key.split(",")[0].split(":")[1]); //This gets field for key
 			for (int i=0;i<key.split(",")[1].split(":")[1].split("-").length; i++)
-				keyToExtract.add(key.split(",")[1].split(":")[1].split("-")[i]);
+				keyToExtract.add(key.split(",")[1].split(":")[1].split("-")[i]);//This gets field for key attributes
 			//Now the first list to extract keys is ready
 
 			//Same type list but for values
@@ -74,7 +75,7 @@ public class ConfigParser {
 				[interest.all, category, display, score]
 			System.out.println(keyToExtract);
 			System.out.println(valueToExtract);*/	
-			json2map(keyToExtract, valueToExtract);
+			printFinalMap(json2map(keyToExtract, valueToExtract));
 		}
 	}
 
@@ -89,45 +90,86 @@ public class ConfigParser {
 		String id="";
 		String attributes="";
 		String[] nest = null;
+		String[] attribArray = null;
 		JSONParser parser = new JSONParser();
 		JSONObject tmp=obj;
-		
+		JSONObject tmpAttr=obj;
+
 		if (key.get(0).split("\\.").length>1)
 			nest = key.get(0).split("\\.");
 		else nest = new String[] {key.get(0)};
 		for (int i=0; i<nest.length ;i++){
 			if (nest.length-i==1){
 				id= tmp.get(nest[i]).toString();
-				for (String attr : key.subList(1, key.size())){
-					attributes+=attr+":";
-					attributes+=String.valueOf(tmp.get(attr));
-				}
 			}
 			else {
 				try {
-					System.out.println(tmp.get(nest[i]));
-					tmp = (JSONObject) parser.parse((String) tmp.get(nest[i]));
+					tmp =(JSONObject) tmp.get(nest[i]);
+					String data=tmp.toJSONString();
+					tmp = (JSONObject) parser.parse(data);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				//tmp =  (JSONObject) tmp.get(nest[i]);
-				//System.out.println(tmp.get(nest[i]));
 			}
 		}
-		//System.out.println(tmp);
+		if (key.get(1).split("\\.").length>1)
+			attribArray = key.get(1).split("\\.");
+		else attribArray = new String[] {key.get(1)};
+		//String[] attribArray= new String[key.size()-1];
+		//attribArray = (String[]) key.subList(1, key.size()).toArray(attribArray);		
+		for (int j=0; j<attribArray.length; j++){
+			if (attribArray.length-j==1){
+				attributes+=attribArray[j]+":";
+				attributes+=String.valueOf(tmpAttr.get(attribArray[j]));
+			}
+			else {
+				try {
+					tmpAttr = (JSONObject) tmp.get(attribArray[j]);
+					String dataAttr=tmpAttr.toJSONString();
+					tmpAttr = (JSONObject) parser.parse(dataAttr);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		return new GraphEntity(id, attributes);
 	}
-	//Difference from keyExtraction is that key is single value, while associated values are a list of Entity 
-	public ArrayList<GraphEntity> valuesExtraction(JSONObject obj, ArrayList<String> key){
+	//Difference from keyExtraction is that key is single value, while values are a list of Entity 
+	public ArrayList<GraphEntity> valuesExtraction(JSONObject obj, ArrayList<String> val){
 		ArrayList<GraphEntity> linkedEntities = new ArrayList<GraphEntity>();
+		String attributes="";
+		String[] nest = null;
+		String[] attribArray = null;
 		JSONParser parser = new JSONParser();
-		
+		JSONObject tmp=obj;
+		JSONObject tmpAttr=obj;
+
+		if (val.get(0).split("\\.").length>1)
+			nest = val.get(0).split("\\.");
+		else nest = new String[] {val.get(0)};
+		for (int i=0; i<nest.length ;i++){
+
+			try {
+				tmp =(JSONObject) tmp.get(nest[i]);
+				String data=tmp.toJSONString();
+				tmp = (JSONObject) parser.parse(data);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		List<String> interestIDS = new ArrayList<String>(tmp.keySet());
+		for (String id : interestIDS){
+			linkedEntities.add(new GraphEntity(id, "da mettece"));					
+		}
+
 		return linkedEntities;
 	}
-	
-	
-	
+
+
+
 	//This method reads the JSON and extracts the field for each relation
 	private LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> json2map( ArrayList<String> key, ArrayList<String> value) throws FileNotFoundException, ParseException{
 		LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap=new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
@@ -149,31 +191,43 @@ public class ConfigParser {
 				printAr(key.get(0).split("."));*/
 
 				GraphEntity keyEntity = keyExtraction(json, key);
-				System.out.println(keyEntity.getId() +" "+keyEntity.getAttr());
+				//System.out.println(keyEntity.getId() +" "+keyEntity.getAttr());
 
 				ArrayList<GraphEntity> valuesEntity = valuesExtraction(json, value);
 				//System.out.println(valueEntity.getId() +" "+valueEntity.getAttr());
 				jsonMap.put(keyEntity, valuesEntity);
+
+				/***Parte vecchia**
 				JSONObject info = (JSONObject)json.get("info");
 
 				JSONObject interests = (JSONObject)info.get("interests");
 				JSONObject all = (JSONObject)interests.get("all");
 				List<String> interestIDS = new ArrayList<String>(all.keySet());
 
-				TreeMap<String, String> interestID_info = new TreeMap<String, String>();
+				TreeMap<String, String> interestID_info = new TreeMap<String, String>();*/
 			}
 		}
-
-
-
 		return jsonMap;
 	}
 
 	private void printAr(String[] ar){
 		for (int i=0; i<ar.length; i++)
 			System.out.println(ar[i]+" ");
-
 	}
+
+	private void printFinalMap (LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap){
+		String k="";
+		for (Entry<GraphEntity, ArrayList<GraphEntity>> entry : jsonMap.entrySet())
+		{
+			k="["+entry.getKey().getId()+","+entry.getKey().getAttr()+"]";
+			String inter="[";
+			for (GraphEntity v : entry.getValue()){
+				inter+="("+v.getId()+","+v.getAttr()+")-";
+			}
+			System.out.println(k + "/-/" + inter+"]");
+		}
+	}
+
 
 	public static void main(String[] args) throws ParseException{
 		ConfigParser p = new ConfigParser();
