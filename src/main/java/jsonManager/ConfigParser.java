@@ -18,6 +18,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import KGTwitter.Difference;
+import KGTwitter.Intersection;
 import jsonManagerModels.GraphEntity;
 
 /*
@@ -35,9 +37,11 @@ import jsonManagerModels.GraphEntity;
 public class ConfigParser {
 
 	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> relations;
+	private LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap = new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
 
-	private static final String confPath="/home/bum-bum/Desktop/jsonConfig.txt";
-	private static final String jsonPath="/home/bum-bum/Desktop/docs.txt";
+
+	private static final String confPath="/Users/davinderkumar/Desktop/jsonConfig.txt";
+	private static final String jsonPath="/Users/davinderkumar/Desktop/interests1148580931.txt";
 
 	public ConfigParser(){
 		this.relations = new LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> >();
@@ -72,9 +76,9 @@ public class ConfigParser {
 				valueToExtract.add(value.split(",")[1].split(":")[1].split("-")[i]);
 			/************************************** fin qui ok: l'output è
 			 * [user, NoNo]
-				[interest.all, category, display, score]
+				[interest.all, category, display, score]*/
 			System.out.println(keyToExtract);
-			System.out.println(valueToExtract);*/	
+			System.out.println(valueToExtract);	
 			printFinalMap(json2map(keyToExtract, valueToExtract));
 		}
 	}
@@ -126,7 +130,7 @@ public class ConfigParser {
 			else {
 				try {
 					tmpAttr = (JSONObject) tmp.get(attribArray[j]);
-					String dataAttr=tmpAttr.toJSONString();
+					String dataAttr = tmpAttr.toJSONString();
 					tmpAttr = (JSONObject) parser.parse(dataAttr);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
@@ -136,6 +140,7 @@ public class ConfigParser {
 		}
 		return new GraphEntity(id, attributes);
 	}
+
 	//Difference from keyExtraction is that key is single value, while values are a list of Entity 
 	public ArrayList<GraphEntity> valuesExtraction(JSONObject obj, ArrayList<String> val){
 		ArrayList<GraphEntity> linkedEntities = new ArrayList<GraphEntity>();
@@ -150,13 +155,11 @@ public class ConfigParser {
 			nest = val.get(0).split("\\.");
 		else nest = new String[] {val.get(0)};
 		for (int i=0; i<nest.length ;i++){
-
 			try {
-				tmp =(JSONObject) tmp.get(nest[i]);
-				String data=tmp.toJSONString();
+				tmp = (JSONObject) tmp.get(nest[i]);
+				String data = tmp.toJSONString();
 				tmp = (JSONObject) parser.parse(data);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -164,7 +167,6 @@ public class ConfigParser {
 		for (String id : interestIDS){
 			linkedEntities.add(new GraphEntity(id, "da mettece"));					
 		}
-
 		return linkedEntities;
 	}
 
@@ -172,7 +174,6 @@ public class ConfigParser {
 
 	//This method reads the JSON and extracts the field for each relation
 	private LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> json2map( ArrayList<String> key, ArrayList<String> value) throws FileNotFoundException, ParseException{
-		LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap=new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
 		JSONParser parser = new JSONParser();
 		//This part because the input is in txt
 		Scanner scanner = new Scanner(new File(jsonPath));
@@ -180,7 +181,8 @@ public class ConfigParser {
 		while (scanner.hasNext()) {
 			String linea = scanner.next();
 			linea = linea+""+scanner.next();
-			scanner.next();
+			if(scanner.hasNext())
+				scanner.next();
 			linea = "{"+linea+"}";
 			//System.out.println(linea);
 			if(!linea.equals("{\n}")){
@@ -195,7 +197,7 @@ public class ConfigParser {
 
 				ArrayList<GraphEntity> valuesEntity = valuesExtraction(json, value);
 				//System.out.println(valueEntity.getId() +" "+valueEntity.getAttr());
-				jsonMap.put(keyEntity, valuesEntity);
+				this.jsonMap.put(keyEntity, valuesEntity);
 
 				/***Parte vecchia**
 				JSONObject info = (JSONObject)json.get("info");
@@ -207,7 +209,7 @@ public class ConfigParser {
 				TreeMap<String, String> interestID_info = new TreeMap<String, String>();*/
 			}
 		}
-		return jsonMap;
+		return this.jsonMap;
 	}
 
 	private void printAr(String[] ar){
@@ -228,15 +230,30 @@ public class ConfigParser {
 		}
 	}
 
-
-	public static void main(String[] args) throws ParseException{
-		ConfigParser p = new ConfigParser();
-		try {
-			p.readFields();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> getJsonMap() {
+		return this.jsonMap;
 	}
 
+	public static void main(String[] args) throws ParseException{
+		String [] input = new String[]{"42080693,29337915","Difference"}; //,47948672
+
+		ConfigParser cf = new ConfigParser();
+		try {
+			cf.readFields();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		int numbersUsers = StringUtils.countMatches(input[0], ",") + 1;
+		String[] users = input[0].split(",");
+		//OPERATIONS
+		if (input[1].equals("Intersection")){
+			Intersection intersection = new Intersection();
+			intersection.computeIntesection(cf.getJsonMap());
+		}
+		if (input[1].equals("Difference")){
+			Difference difference = new Difference();
+			difference.computeDifference(cf.getJsonMap(), users);
+		}
+	}
 }
