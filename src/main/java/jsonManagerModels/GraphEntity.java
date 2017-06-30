@@ -4,7 +4,7 @@ package jsonManagerModels;
  * da un ID e dall'insieme degli attributi.
  */
 
-public class GraphEntity {
+public class GraphEntity implements Comparable<GraphEntity>{
 
 	private String id, attr;
 	
@@ -28,6 +28,27 @@ public class GraphEntity {
 	public void setAttr(String attr) {
 		this.attr = attr;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		GraphEntity g = (GraphEntity) obj;
+		return this.getId().equals(g.getId()) && this.getAttr().equals(g.getAttr());
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getId().hashCode()+this.getAttr().hashCode();
+	}
+	
+	@Override
+	public int compareTo(GraphEntity o) {			//serve solo questo per la mappa quando faccio il get per chiave
+		int result = this.getId().compareTo(o.getId());
+		if (result == 0)
+			result = this.getAttr().compareTo(o.getAttr());
+		return result;	
+	}
+	
+	
 	
 	/*
 	 * Le mappe che rappresentano le relazioni saranno formate da:
