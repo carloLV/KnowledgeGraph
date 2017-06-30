@@ -292,7 +292,7 @@ public class ConfigParser {
 	}
 
 	public static void main(String[] args) throws ParseException{
-		String [] input = new String[]{"42080693,29337915","Intersection"}; //,47948672
+		String [] input = new String[]{"1148580931","Intersection"}; //,47948672
 
 		ConfigParser cf = new ConfigParser();
 		try {
@@ -301,16 +301,16 @@ public class ConfigParser {
 			e.printStackTrace();
 		}
 		
-//		int numbersUsers = StringUtils.countMatches(input[0], ",") + 1;
-//		String[] users = input[0].split(",");
-//		//OPERATIONS
+		//int numbersUsers = StringUtils.countMatches(input[0], ",") + 1;
+		String[] users = input[0].split(",");
+		//OPERATIONS
 		if (input[1].equals("Intersection")){
 			Intersection intersection = new Intersection();
-			intersection.computeIntesection(cf.getJsonMap());
+			intersection.computeIntesection(cf.getJsonMap(), users[0]);
 		}
-//		if (input[1].equals("Difference")){
-//			Difference difference = new Difference();
-//			difference.computeDifference(cf.getJsonMap(), users);
-//		}
+		if (input[1].equals("Difference")){
+			Difference difference = new Difference();
+			difference.computeDifference(cf.getJsonMap(), users[0]);
+		}
 	}
 }
