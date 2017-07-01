@@ -8,7 +8,8 @@ import jsonManagerModels.GraphEntity;
 
 public class Difference {
 
-	public void computeDifference(LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap, String[] users, int numbersUsers) {
+	public LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> computeDifference(LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap, String[] users, int numbersUsers) {
+		LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> resultDifference = new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
 
 		SupportToOperations supportToOperations =  new SupportToOperations(); //contiene i metodi in comune tra le operazioni di intersezione e differenza
 		System.out.println("\nDIFFERENZA");
@@ -44,5 +45,10 @@ public class Difference {
 				System.out.println(graphEntity.getId()+" "+graphEntity.getAttr());
 			}
 		}
+		resultDifference.put(new GraphEntity(userAttr.getId(), userAttr.getAttr()), difference);
+		return resultDifference;
 	}
 }
+
+//la differenza ritorna resultDifference, che è di size = 1, e ha come prima coppia di stringhe le info relative all'unico user passato o comunque
+//al primo user della serie di user passati. Come valore si ha un ArrayList che contiene gli interessi che rappresentano la differenza

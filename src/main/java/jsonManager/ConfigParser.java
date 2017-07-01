@@ -304,10 +304,14 @@ public class ConfigParser {
 		int numbersUsers = StringUtils.countMatches(input[0], ",") + 1;
 		String[] users = input[0].split(",");
 		//OPERATIONS
+		//se si passa un solo utente l'intersezione restituisce id_utente, attributi utente, interessi (dati dall'intersezione di tutti gli interessi di tutti gli utenti presenti nel file)
+		//se si passano due o più utenti allora in uscita  si hanno solo gli interessi che sono un'intersezione degli interessi degli utenti passati
 		if (input[1].equals("Intersection")){
 			Intersection intersection = new Intersection();
 			intersection.computeIntesection(cf.getJsonMap(), users, numbersUsers);
 		}
+		//se si passa un solo utente la differenza restituisce id_utente, attributi utente, differenza di interessi (dell'utente con tutti gli interessi di altri utenti presenti nel file)
+		//se si passano due o più utenti in uscita si hanno solo gli interessi che sono la differenza degli interessi dell'primo utente passato con gli interessi degli altri utenti passati
 		if (input[1].equals("Difference")){
 			Difference difference = new Difference();
 			difference.computeDifference(cf.getJsonMap(), users, numbersUsers);
