@@ -18,8 +18,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import KGTwitter.Difference;
-import KGTwitter.Intersection;
+import KGTwitter.*;
 import jsonManagerModels.GraphEntity;
 
 /*
@@ -304,17 +303,23 @@ public class ConfigParser {
 		int numbersUsers = StringUtils.countMatches(input[0], ",") + 1;
 		String[] users = input[0].split(",");
 		//OPERATIONS
-		//se si passa un solo utente l'intersezione restituisce id_utente, attributi utente, interessi (dati dall'intersezione di tutti gli interessi di tutti gli utenti presenti nel file)
-		//se si passano due o più utenti allora in uscita  si hanno solo gli interessi che sono un'intersezione degli interessi degli utenti passati
+		//se si passa "all" l'intersezione restituisce id_utente = "all", attributi_utente = "nothing", interessi (dati dall'intersezione degli interessi degli utenti presenti nel file)
+		//se si passano due o più utenti l'intersezione restituisce id_utente = "concatenazione degli id degli utenti", attributi_utente = "nothing", interessi che sono un'intersezione degli interessi degli utenti passati
+		//id_utente,attributi_utente sono coppie di stringhe e interessi è un array list delle coppie di stringhe
 		if (input[1].equals("Intersection")){
 			Intersection intersection = new Intersection();
 			intersection.computeIntesection(cf.getJsonMap(), users, numbersUsers);
 		}
 		//se si passa un solo utente la differenza restituisce id_utente, attributi utente, differenza di interessi (dell'utente con tutti gli interessi di altri utenti presenti nel file)
-		//se si passano due o più utenti in uscita si hanno solo gli interessi che sono la differenza degli interessi dell'primo utente passato con gli interessi degli altri utenti passati
+		//se si passano due o più utenti la differenza restituisce id_utente(del primo utente passato), attributi_utente(del primo utente passato), interessi che sono la differenza degli interessi dell'primo utente passato con gli interessi degli altri utenti passati
 		if (input[1].equals("Difference")){
 			Difference difference = new Difference();
 			difference.computeDifference(cf.getJsonMap(), users, numbersUsers);
+		}
+		
+		if (input[1].equals("Union")){
+			Union union = new Union();
+			union.computeUnione(cf.getJsonMap(), users, numbersUsers);
 		}
 	}
 }

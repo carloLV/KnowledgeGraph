@@ -50,5 +50,42 @@ public class Difference {
 	}
 }
 
-//la differenza ritorna resultDifference, che è di size = 1, e ha come prima coppia di stringhe le info relative all'unico user passato o comunque
-//al primo user della serie di user passati. Come valore si ha un ArrayList che contiene gli interessi che rappresentano la differenza
+//la differenza ritorna resultDifference, che è di size = 1, e ha come chiave una coppia di stringhe che sono id_utente e attributi_utente
+//quando si passa un unico utnete id_utente e attributi_utente fanno riferimento a questo utente
+//quando si passano una serie di utenit id_utente e attributi_utente fanno riferimento al primo utente della serie
+//Come valore si ha un ArrayList che contiene gli interessi che rappresentano la differenza degli interessi dell'unico user passato con gli altri presenti nel file
+//o del primo user passato con gli altri passati in input
+
+
+//SE SI PASSANO PIU' UTENTI (42080693,29337915) SI HA: 
+
+//DIFFERENZA
+//42080693 
+//54780ed3d4ac148a337e9851 display:History 
+//55f1f6a192cffb2b365a74bb display:Premier League soccer 
+//57c9c32692cffb3b2a085fd2 display:Bundesliga league soccer 
+//55afc38792cffb786d83f900 display:Hobbies and interests 
+//55afc38492cffb786d83f826 display:Porsche (brand) 
+//5457c85bd4ac147ca1acdd76 display:Soccer 
+//56a6605592cffb338344088c display:Chris Pratt (celebrity) 
+//5457c85bd4ac147ca1acdd6d display:Motorcycle racing 
+//55afc38892cffb786d83f944 display:Mercedes-Benz (brand) 
+//55afc38792cffb786d83f912 display:MotoGP 
+
+
+//SE SI PASSA UN SOLO UTENTE SI HA:
+
+//DIFFERENZA
+//42080693 
+//54780ed3d4ac148a337e9851 display:History 
+//55f1f6a192cffb2b365a74bb display:Premier League soccer 
+//57c9c32692cffb3b2a085fd2 display:Bundesliga league soccer 
+//55afc38792cffb786d83f900 display:Hobbies and interests 
+//55afc38492cffb786d83f826 display:Porsche (brand) 
+//5457c85bd4ac147ca1acdd76 display:Soccer 
+//56a6605592cffb338344088c display:Chris Pratt (celebrity) 
+//5457c85bd4ac147ca1acdd6d display:Motorcycle racing 
+//55afc38792cffb786d83f912 display:MotoGP 
+
+//la penultima riga non c'è più perchè nel secondo caso si fa la differenza anche con user 47948672 che ha Mercedes-Benz
+//mentre nel primo caso il secondo utente 29337915 non ha Mercedez-Benz
