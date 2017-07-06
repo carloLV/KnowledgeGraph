@@ -2,55 +2,52 @@ package KGTwitter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.TreeMap;
 
 import jsonManagerModels.GraphEntity;
 
 public class Difference {
 
-	public LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> computeDifference(LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap, String[] users, int numbersUsers) {
-		LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> resultDifference = new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
-
+	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> computeDifference(Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> relationsMap, String[] users, int numbersUsers) {
+		Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> resultDifference = new LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>>();
 		SupportToOperations supportToOperations =  new SupportToOperations(); //contiene i metodi in comune tra le operazioni di intersezione e differenza
-		System.out.println("\nDIFFERENZA");
-		GraphEntity userAttr = supportToOperations.getUserID_Attributes(jsonMap, users[0]); //ritorna una coppia di stringhe di cui la prima è l'id dello user passato e la seconda i suoi attributi
-		ArrayList<GraphEntity> interUserCercato = jsonMap.get(userAttr);	//qui dentro si hanno gli interessi dell'utente userAttr (riga precedente)
-		jsonMap.remove(userAttr);	//perchè andrò a fare la differenza tra gli interessi dell'utente scelto sopra e tutti gli interessi degli altri utenti..quindi devo togliere da jsonMap l'utente su cui si vuole fare la differenza
-		ArrayList<GraphEntity> difference =  new ArrayList<GraphEntity>();	//conterrà il risultato
-		System.out.println(userAttr.getId()+" "+userAttr.getAttr());
-
-		if(numbersUsers == 1){
-			TreeMap<String, ArrayList<String>> allInterest = supportToOperations.getInterestsMap(jsonMap);	//ritorna una mappa che ha come chiave TUTTI gli ID_interesse e come valore un arraylist in cui ogni elemento sono gli "attributi" di interesse..cioè la descrizione dell'interesse
-			//cioè se un interesse ha id = 123 ed è presente per 10 utenti diversi...l'arraylist sarà lungo 10 e tutti questi 10 elementi(stringhe) saranno uguali
-			for (GraphEntity valueAttr : interUserCercato) {
-				if(!allInterest.containsKey(valueAttr.getId()))
-					difference.add(valueAttr);		//se un interesse che ha user di differenza scelto non è presente negli altri user allora tale interesse farà parte della differenza
+		
+		for (String relation : relationsMap.keySet()) {
+			GraphEntity userAttr = supportToOperations.getUserID_Attributes(relationsMap.get(relation), users[0]); //ritorna una coppia di stringhe di cui la prima è l'id dello user passato e la seconda i suoi attributi
+			ArrayList<GraphEntity> interUserCercato = relationsMap.get(relation).get(userAttr);	//qui dentro si hanno gli interessi dell'utente userAttr (riga precedente)
+			relationsMap.get(relation).remove(userAttr);	//perchè andrò a fare la differenza tra gli interessi dell'utente scelto sopra e tutti gli interessi degli altri utenti..quindi devo togliere da jsonMap l'utente su cui si vuole fare la differenza
+			ArrayList<GraphEntity> difference =  new ArrayList<GraphEntity>();	//conterrà il risultato
+			
+			if(numbersUsers == 1){
+				TreeMap<String, ArrayList<String>> allInterest = supportToOperations.getInterestsMap(relationsMap.get(relation));	//ritorna una mappa che ha come chiave TUTTI gli ID_interesse e come valore un arraylist in cui ogni elemento sono gli "attributi" di interesse..cioè la descrizione dell'interesse
+				//cioè se un interesse ha id = 123 ed è presente per 10 utenti diversi...l'arraylist sarà lungo 10 e tutti questi 10 elementi(stringhe) saranno uguali
+				for (GraphEntity valueAttr : interUserCercato) {
+					if(!allInterest.containsKey(valueAttr.getId()))
+						difference.add(valueAttr);		//se un interesse che ha user di differenza scelto non è presente negli altri user allora tale interesse farà parte della differenza
+				}
 			}
-			for(GraphEntity graphEntity : difference){
-				System.out.println(graphEntity.getId()+" "+graphEntity.getAttr());
+			else{
+				LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> utentiDiInteresse = new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
+				for (int i = 1; i<numbersUsers; i++){
+					GraphEntity UAttr = supportToOperations.getUserID_Attributes(relationsMap.get(relation), users[i]);
+					utentiDiInteresse.put(UAttr, relationsMap.get(relation).get(UAttr));
+				}
+				TreeMap<String, ArrayList<String>> interessiDiInteresse = supportToOperations.getInterestsMap(utentiDiInteresse); 
+				for (GraphEntity valueAttr : interUserCercato) {
+					if(!interessiDiInteresse.containsKey(valueAttr.getId()))
+						difference.add(valueAttr);		//se un interesse che ha user di differenza scelto non è presente negli altri user allora tale interesse farà parte della differenza
+				}
 			}
+			LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> mappa = new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
+			mappa.put(new GraphEntity(userAttr.getId(), userAttr.getAttr()), difference);
+			resultDifference.put(relation, mappa);
 		}
-		else{
-			LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> utentiDiInteresse = new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
-			for (int i = 1; i<numbersUsers; i++){
-				GraphEntity UAttr = supportToOperations.getUserID_Attributes(jsonMap, users[i]);
-				utentiDiInteresse.put(UAttr, jsonMap.get(UAttr));
-			}
-			TreeMap<String, ArrayList<String>> interessiDiInteresse = supportToOperations.getInterestsMap(utentiDiInteresse); 
-			for (GraphEntity valueAttr : interUserCercato) {
-				if(!interessiDiInteresse.containsKey(valueAttr.getId()))
-					difference.add(valueAttr);		//se un interesse che ha user di differenza scelto non è presente negli altri user allora tale interesse farà parte della differenza
-			}
-			for(GraphEntity graphEntity : difference){
-				System.out.println(graphEntity.getId()+" "+graphEntity.getAttr());
-			}
-		}
-		resultDifference.put(new GraphEntity(userAttr.getId(), userAttr.getAttr()), difference);
 		return resultDifference;
 	}
 }
 
-//la differenza ritorna resultDifference, che è di size = 1, e ha come chiave una coppia di stringhe che sono id_utente e attributi_utente
+//la differenza ritorna resultDifference, che è di size = 1 nel nostro caso, e ha come chiave una coppia di stringhe che sono id_utente e attributi_utente
 //quando si passa un unico utnete id_utente e attributi_utente fanno riferimento a questo utente
 //quando si passano una serie di utenit id_utente e attributi_utente fanno riferimento al primo utente della serie
 //Come valore si ha un ArrayList che contiene gli interessi che rappresentano la differenza degli interessi dell'unico user passato con gli altri presenti nel file

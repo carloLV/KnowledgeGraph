@@ -2,53 +2,51 @@ package KGTwitter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import jsonManagerModels.GraphEntity;
 
 public class Union {
 
-	public LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> computeUnione(LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap, String[] users, int numbersUsers) {
+	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> computeUnione(Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> relationsMap, String[] users, int numbersUsers) {
 		SupportToOperations supportToOperations = new SupportToOperations(); 		//contiene i metodi in comune tra le operazioni di intersezione e differenza
-		LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> resultIntersection = new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
-		ArrayList<GraphEntity> valueAttributes = new ArrayList<GraphEntity>();
-		
-		System.out.println("\nUNION:");	
-		if (users[0].equals("all")){
-			for (GraphEntity userAttr : jsonMap.keySet()) {
-				for (GraphEntity valueAttr : jsonMap.get(userAttr)) {
-					if(!valueAttributes.contains(valueAttr)){
-						valueAttributes.add(valueAttr);
+		Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> resultUnion = new LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>>();
+
+		for (String relation : relationsMap.keySet()) {
+			ArrayList<GraphEntity> valueAttributes = new ArrayList<GraphEntity>();
+			LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> mappa = new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
+			if (users[0].equals("all")){
+				for (GraphEntity userAttr : relationsMap.get(relation).keySet()) {
+					for (GraphEntity valueAttr : relationsMap.get(relation).get(userAttr)) {
+						if(!valueAttributes.contains(valueAttr)){
+							valueAttributes.add(valueAttr);
+						}
+					}
+				}				
+				mappa.put(new GraphEntity("all", "nothing"), valueAttributes);
+				resultUnion.put(relation, mappa);
+			}
+			else{
+				String utenti = "";
+				LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> utentiDiInteresse = new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
+				for (int i = 0; i < numbersUsers; i++){
+					utenti = utenti + users[i]+" ";
+					GraphEntity userAttr = supportToOperations.getUserID_Attributes(relationsMap.get(relation), users[i]);
+					utentiDiInteresse.put(userAttr, relationsMap.get(relation).get(userAttr));
+				}
+				for (GraphEntity userAttr : utentiDiInteresse.keySet()) {
+					for (GraphEntity valueAttr : relationsMap.get(relation).get(userAttr)) {
+						if(!valueAttributes.contains(valueAttr)){
+							valueAttributes.add(valueAttr);
+						}
 					}
 				}
+				mappa.put(new GraphEntity(utenti, "nothing"), valueAttributes);
+				resultUnion.put(relation, mappa);
+
 			}
-			resultIntersection.put(new GraphEntity("all", "nothing"), valueAttributes);
 		}
-		else{
-			String utenti = "";
-			LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> utentiDiInteresse = new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
-			for (int i = 0; i < numbersUsers; i++){
-				utenti = utenti + users[i]+" ";
-				GraphEntity userAttr = supportToOperations.getUserID_Attributes(jsonMap, users[i]);
-				utentiDiInteresse.put(userAttr, jsonMap.get(userAttr));
-			}
-			for (GraphEntity userAttr : utentiDiInteresse.keySet()) {
-				for (GraphEntity valueAttr : jsonMap.get(userAttr)) {
-					if(!valueAttributes.contains(valueAttr)){
-						valueAttributes.add(valueAttr);
-					}
-				}
-			}
-			resultIntersection.put(new GraphEntity(utenti, "nothing"), valueAttributes);
-		}
-		
-		for (GraphEntity userAttr : resultIntersection.keySet()) {
-			System.out.println(userAttr.getId() +" "+userAttr.getAttr());
-			for (GraphEntity valueAttr : resultIntersection.get(userAttr)) {
-				System.out.println(valueAttr.getId()+" "+valueAttr.getAttr());
-			}
-			
-		}
-		return resultIntersection;		
+		return resultUnion;		
 	}
 }
 
@@ -71,3 +69,6 @@ public class Union {
 //54780ed3d4ac148a337e9851 display:History 
 //55f1f6a192cffb2b365a74bb display:Premier League soccer 
 //57c9c32692cffb3b2a085fd2 display:Bundesliga league soccer 
+
+//54613f71d4ac14770d4e9f8c è resente i tutti gli utenti e non ci sono doppioni nel risultato
+//54780ed3d4ac148a337e9851 è presente solo nel primo utente

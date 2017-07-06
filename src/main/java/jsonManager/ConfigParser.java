@@ -35,18 +35,15 @@ import jsonManagerModels.GraphEntity;
 
 public class ConfigParser {
 
-	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> relations;
-
+	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> relations =  new LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> >();
+	LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap=new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
+	
 	private static final String confPath="jsonConfig.txt";
 	private static final String jsonPath="123.txt";
-	LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap=new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
 
 
-	public ConfigParser(){
-		this.relations = new LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> >();
-	}
 
-	private void readFields() throws IOException, ParseException{
+	public void readFields() throws IOException, ParseException{
 		FileReader input = new FileReader(confPath);
 		BufferedReader bufRead = new BufferedReader(input);
 		String myLine = null;
@@ -81,7 +78,6 @@ public class ConfigParser {
 			//printFinalMap(json2map(keyToExtract, valueToExtract));
 			this.relations.put(relation, json2map(keyToExtract, valueToExtract));
 			System.out.println("Ho inserito la relazione " + relation);
-			//System.out.println(this.relations.keySet());
 			printFinalMap(this.relations.get(relation));
 			
 			///****  OK FIN QUI È FUNZIONANTE***///
@@ -238,7 +234,6 @@ public class ConfigParser {
 		return;
 	}
 
-
 	//This method reads the JSON and extracts the field for each relation
 	private LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> json2map( ArrayList<String> key, ArrayList<String> value) throws FileNotFoundException, ParseException{
 		JSONParser parser = new JSONParser();
@@ -286,40 +281,8 @@ public class ConfigParser {
 			System.out.println(k + "/-/" + inter+"]");
 		}
 	}
-	public LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> getJsonMap() {
-		return this.jsonMap;
-	}
-
-	public static void main(String[] args) throws ParseException{
-		String [] input = new String[]{"42080693,29337915,47948672","Difference"}; //,47948672
-
-		ConfigParser cf = new ConfigParser();
-		try {
-			cf.readFields();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		int numbersUsers = StringUtils.countMatches(input[0], ",") + 1;
-		String[] users = input[0].split(",");
-		//OPERATIONS
-		//se si passa "all" l'intersezione restituisce id_utente = "all", attributi_utente = "nothing", interessi (dati dall'intersezione degli interessi degli utenti presenti nel file)
-		//se si passano due o più utenti l'intersezione restituisce id_utente = "concatenazione degli id degli utenti", attributi_utente = "nothing", interessi che sono un'intersezione degli interessi degli utenti passati
-		//id_utente,attributi_utente sono coppie di stringhe e interessi è un array list delle coppie di stringhe
-		if (input[1].equals("Intersection")){
-			Intersection intersection = new Intersection();
-			intersection.computeIntesection(cf.getJsonMap(), users, numbersUsers);
-		}
-		//se si passa un solo utente la differenza restituisce id_utente, attributi utente, differenza di interessi (dell'utente con tutti gli interessi di altri utenti presenti nel file)
-		//se si passano due o più utenti la differenza restituisce id_utente(del primo utente passato), attributi_utente(del primo utente passato), interessi che sono la differenza degli interessi dell'primo utente passato con gli interessi degli altri utenti passati
-		if (input[1].equals("Difference")){
-			Difference difference = new Difference();
-			difference.computeDifference(cf.getJsonMap(), users, numbersUsers);
-		}
-		
-		if (input[1].equals("Union")){
-			Union union = new Union();
-			union.computeUnione(cf.getJsonMap(), users, numbersUsers);
-		}
+	
+	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> getRelations() {
+		return relations;
 	}
 }
