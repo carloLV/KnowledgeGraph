@@ -18,8 +18,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import KGTwitter.Difference;
-import KGTwitter.Intersection;
+import KGTwitter.*;
 import jsonManagerModels.GraphEntity;
 
 /*
@@ -36,18 +35,15 @@ import jsonManagerModels.GraphEntity;
 
 public class ConfigParser {
 
-	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> relations;
-
-	private static final String confPath="jsonConfig.txt";
-	private static final String jsonPath="/Users/davinderkumar/Desktop/interests1148580931.txt";
+	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> relations =  new LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> >();
 	LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap=new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
+	
+	private static final String confPath="jsonConfig.txt";
+	private static final String jsonPath="123.txt";
 
 
-	public ConfigParser(){
-		this.relations = new LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> >();
-	}
 
-	private void readFields() throws IOException, ParseException{
+	public void readFields() throws IOException, ParseException{
 		FileReader input = new FileReader(confPath);
 		BufferedReader bufRead = new BufferedReader(input);
 		String myLine = null;
@@ -82,7 +78,6 @@ public class ConfigParser {
 			//printFinalMap(json2map(keyToExtract, valueToExtract));
 			this.relations.put(relation, json2map(keyToExtract, valueToExtract));
 			System.out.println("Ho inserito la relazione " + relation);
-			//System.out.println(this.relations.keySet());
 			printFinalMap(this.relations.get(relation));
 			
 			///****  OK FIN QUI È FUNZIONANTE***///
@@ -239,7 +234,6 @@ public class ConfigParser {
 		return;
 	}
 
-
 	//This method reads the JSON and extracts the field for each relation
 	private LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> json2map( ArrayList<String> key, ArrayList<String> value) throws FileNotFoundException, ParseException{
 		JSONParser parser = new JSONParser();
@@ -287,30 +281,8 @@ public class ConfigParser {
 			System.out.println(k + "/-/" + inter+"]");
 		}
 	}
-	public LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> getJsonMap() {
-		return this.jsonMap;
-	}
-
-	public static void main(String[] args) throws ParseException{
-		String [] input = new String[]{"1148580931","Intersection"}; //,47948672
-
-		ConfigParser cf = new ConfigParser();
-		try {
-			cf.readFields();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		//int numbersUsers = StringUtils.countMatches(input[0], ",") + 1;
-		String[] users = input[0].split(",");
-		//OPERATIONS
-		if (input[1].equals("Intersection")){
-			Intersection intersection = new Intersection();
-			intersection.computeIntesection(cf.getJsonMap(), users[0]);
-		}
-		if (input[1].equals("Difference")){
-			Difference difference = new Difference();
-			difference.computeDifference(cf.getJsonMap(), users[0]);
-		}
+	
+	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> getRelations() {
+		return relations;
 	}
 }

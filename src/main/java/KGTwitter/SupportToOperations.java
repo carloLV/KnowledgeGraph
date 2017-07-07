@@ -14,8 +14,8 @@ public class SupportToOperations {
 	public TreeMap<String, ArrayList<String>> getInterestsMap(LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap) {
 		TreeMap<String, ArrayList<String>> allInterest = new TreeMap<String, ArrayList<String>>();	//la chiave è id del interesse e come valore la sua descrizioni
 		for (GraphEntity userAttr : jsonMap.keySet()) {
-			ArrayList<GraphEntity> userAttr_interests = jsonMap.get(userAttr);
-			for (GraphEntity valueAttr : userAttr_interests) {
+			ArrayList<GraphEntity> user_interests = jsonMap.get(userAttr);
+			for (GraphEntity valueAttr : user_interests) {
 				if(allInterest.containsKey(valueAttr.getId()))
 					allInterest.get(valueAttr.getId()).add(valueAttr.getAttr());
 				else{
