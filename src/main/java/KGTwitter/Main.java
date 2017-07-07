@@ -9,13 +9,15 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.parser.ParseException;
 
+import databaseWriter.NodeCreator2Neo;
 import jsonManager.ConfigParser;
 import jsonManagerModels.GraphEntity;
 
 public class Main {
 	public static void main(String[] args) throws ParseException{
-		String [] input = new String[]{"42080693,29337915","Intersection"}; //,47948672
-
+		String [] input = new String[]{"42080693,29337915","Difference"}; //,47948672
+		NodeCreator2Neo writer = new NodeCreator2Neo();
+		
 		ConfigParser cf = new ConfigParser();
 		try {
 			cf.readFields();
@@ -33,7 +35,8 @@ public class Main {
 		if (input[1].equals("Intersection")){
 			Intersection intersection = new Intersection();
 			result = intersection.computeIntesection(cf.getRelations(), users, numbersUsers);
-			System.out.println("\nINTERSECTION:");										//cioè se un interesse ha id = 123 ed è presente per 10 utenti diversi...l'arraylist sarà lungo 10 e tutti questi 10 elementi(stringhe) saranno uguali			
+			System.out.println("\nINTERSECTION:");//cioè se un interesse ha id = 123 ed è presente per 10 utenti diversi...l'arraylist sarà lungo 10 e tutti questi 10 elementi(stringhe) saranno uguali			
+			writer.map2graph(result);
 		}
 		//se si passa un solo utente la differenza restituisce id_utente, attributi utente, differenza di interessi (dell'utente con tutti gli interessi di altri utenti presenti nel file)
 		//se si passano due o più utenti la differenza restituisce id_utente(del primo utente passato), attributi_utente(del primo utente passato), interessi che sono la differenza degli interessi dell'primo utente passato con gli interessi degli altri utenti passati
@@ -41,12 +44,14 @@ public class Main {
 			Difference difference = new Difference();
 			result = difference.computeDifference(cf.getRelations(), users, numbersUsers);
 			System.out.println("\nDIFFERENCE");
+			writer.map2graph(result);
 		}
 		
 		if (input[1].equals("Union")){
 			Union union = new Union();
 			result = union.computeUnione(cf.getRelations(), users, numbersUsers);
-			System.out.println("\nUNION:");	
+			System.out.println("\nUNION:");
+			writer.map2graph(result);
 		}
 		
 		//serve per stampare il risultato delle operazioni

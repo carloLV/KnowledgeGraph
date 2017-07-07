@@ -40,7 +40,6 @@ public class GraphEntity implements Comparable<GraphEntity>{
 		return this.getId().hashCode()+this.getAttr().hashCode();
 	}
 	
-	@Override
 	public int compareTo(GraphEntity o) {			//serve solo questo per la mappa quando faccio il get per chiave
 		int result = this.getId().compareTo(o.getId());
 		if (result == 0)

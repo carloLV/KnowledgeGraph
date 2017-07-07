@@ -1,4 +1,4 @@
-package DatabaseTest;
+package databaseWriter;
 
 import java.io.File;
 import org.neo4j.driver.v1.*;
