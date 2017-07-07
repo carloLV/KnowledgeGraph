@@ -1,1 +1,1 @@
-REL:interested_to KEY:user,ATTR:None VALUE:info.interests.all.*,ATTR:category-display-name-parents
+REL:interested_to KEY:user,ATTR:None VALUE:info.interests.all.*,ATTR:category-name-parents

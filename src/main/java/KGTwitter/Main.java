@@ -15,7 +15,7 @@ import jsonManagerModels.GraphEntity;
 
 public class Main {
 	public static void main(String[] args) throws ParseException{
-		String [] input = new String[]{"42080693,29337915","Difference"}; //,47948672
+		String [] input = new String[]{"42080693,29337915","Intersection"}; //,47948672
 		NodeCreator2Neo writer = new NodeCreator2Neo();
 		
 		ConfigParser cf = new ConfigParser();
