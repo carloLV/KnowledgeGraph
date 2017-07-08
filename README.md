@@ -1,5 +1,5 @@
 # KnowledgeGraph
-**This readme is not yet completed**
+**This readme is not completed yet**
 
 This project is composed in 3 parts.
 
@@ -11,4 +11,5 @@ In this part we operate on our structures and produce as output the result of th
 Supported operations (for now) are: *Intersection*, *Difference*, *Union*.
 
 ## 3rd: Write results on Neo4j
-The last part is to write all the graphs computed in a suitable DB, so we choose Neo4j.   
+The last part is to write all the graphs computed in a suitable DB, so we choose Neo4j.
+Note: DB has to be **Shut Down** when running the operations.

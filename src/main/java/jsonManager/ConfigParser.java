@@ -20,6 +20,7 @@ import org.json.simple.parser.ParseException;
 
 import KGTwitter.*;
 import jsonManagerModels.GraphEntity;
+import userDefinedFunction.UDF;
 
 /*
  * This class reads a config file and creates the map we need to manipulate.
@@ -39,7 +40,7 @@ public class ConfigParser {
 	LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap=new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
 	
 	private static final String confPath="jsonConfig.txt";
-	private static final String jsonPath="userKG.json";
+	private static final String jsonPath="prova2utenti.json";
 	///home/bum-bum/Desktop/magistrale/BigData/Prog2/knowledgeGraphs/knowledgeGraphs/userKG.json
 
 
@@ -92,6 +93,7 @@ public class ConfigParser {
 			jsonObject.putAll((Map)object);
 		if (attribs.length!=0)
 			for (String a: attribs){
+				if (jsonObject.get(a)!=null)
 				attr+=a+":"+jsonObject.get(a).toString()+" ";
 			}
 		}
@@ -287,6 +289,9 @@ public class ConfigParser {
 	}
 	
 	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> getRelations() {
-		return relations;
+		/*** MODIFY THIS LINE IF YOU HAVE SOME CUSTOM FUNCTIONS TO APPLY***/
+		UDF udf = new UDF((LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>>) this.relations, "is_parent");
+		udf.adjustmentMethod();
+		return this.relations;
 	}
 }

@@ -24,10 +24,12 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	
 		
 		int numbersUsers = StringUtils.countMatches(input[0], ",") + 1;
 		String[] users = input[0].split(",");
 		Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> result = null;
+		
 		//OPERATIONS
 		//se si passa "all" l'intersezione restituisce id_utente = "all", attributi_utente = "nothing", interessi (dati dall'intersezione degli interessi degli utenti presenti nel file)
 		//se si passano due o più utenti l'intersezione restituisce id_utente = "concatenazione degli id degli utenti", attributi_utente = "nothing", interessi che sono un'intersezione degli interessi degli utenti passati

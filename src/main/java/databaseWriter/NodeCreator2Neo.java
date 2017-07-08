@@ -18,9 +18,10 @@ import jsonManagerModels.GraphEntity;
 public class NodeCreator2Neo {
 	
 	private static final File DB_PATH=new File("/home/bum-bum/Desktop/neo4j-community-3.2.1/data/databases/graph.db");
-	Relationship relationship;
-	RelationshipType reltype;
+	public Relationship relationship;
+	public RelationshipType reltype;
 	public GraphDatabaseService graphDb;
+	
 	
 	public NodeCreator2Neo(){
 		graphDb = new GraphDatabaseFactory().newEmbeddedDatabase( DB_PATH );
@@ -48,10 +49,13 @@ public class NodeCreator2Neo {
 	public void map2graph(Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> graph){
 		Node keyEntity;
 		Node valueEntity;
+		ArrayList<String> inserted;//remembers the entity already inserted
 		//For each realtion we create the nodes, if not present, and link it
 		for (String rel : graph.keySet()){
+			inserted = new ArrayList<String>();
 			//now we iterate on graph entities, creating nodes and relations
 			for (GraphEntity key : graph.get(rel).keySet()){
+				if (!inserted.contains(key.getId()));//controllare questa parte...
 				//the creation is contained in a transaction
 				try ( Transaction tx = graphDb.beginTx() )
 				{
@@ -59,6 +63,7 @@ public class NodeCreator2Neo {
 					keyEntity.setProperty("EntityID",key.getId());
 					keyEntity.setProperty("Attributes",key.getAttr());
 				    tx.success();
+				    inserted.add(key.getId());
 				    System.out.println("Prima trans eseguita con successo");
 				}
 				
