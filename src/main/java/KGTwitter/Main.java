@@ -68,3 +68,7 @@ public class Main {
 		}
 	}
 }
+
+
+//REL:INTERESTED_TO KEY:user,ATTR:None VALUE:info.interests.all.*,ATTR:display
+//REL:IS_CHILD KEY:info.interests.all.*,ATTR:parents VALUE:info.valid,ATTR:None
