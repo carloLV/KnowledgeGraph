@@ -23,7 +23,7 @@ public class Union {
 						}
 					}
 				}				
-				mappa.put(new GraphEntity("all", "nothing"), valueAttributes);
+				mappa.put(new GraphEntity("all", "None:noattr"), valueAttributes);
 				resultUnion.put(relation, mappa);
 			}
 			else{
@@ -41,7 +41,7 @@ public class Union {
 						}
 					}
 				}
-				mappa.put(new GraphEntity(utenti, "nothing"), valueAttributes);
+				mappa.put(new GraphEntity(utenti, "None:noattr"), valueAttributes);
 				resultUnion.put(relation, mappa);
 
 			}

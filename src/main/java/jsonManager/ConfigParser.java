@@ -294,11 +294,11 @@ public class ConfigParser {
 	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> getRelations() {
 		//create the Scanner
 		Scanner terminalInput = new Scanner(System.in);
-
+		
 		System.out.println("Inserisci la relazione su cui applicare UDF. Se non hai UDF scrivi None");
-		String input = terminalInput.nextLine();
+		String relation = terminalInput.nextLine();
 		/*** MODIFY THIS LINE IF YOU HAVE SOME CUSTOM FUNCTIONS TO APPLY***/
-		UDF udf = new UDF((LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>>) this.relations, input);
+		UDF udf = new UDF((LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>>) this.relations, relation);
 		udf.adjustmentMethod();
 		return this.relations;
 	}

@@ -40,6 +40,7 @@ public class UDF {
 			GraphEntity newEntity = new GraphEntity(g.getId(), "None:noattr");
 			ArrayList<GraphEntity> values=new ArrayList<GraphEntity>();
 			//Now we parse attribs and get the values we need to reconstruct map
+			System.out.println(g.getAttr());
 			String attribs = g.getAttr().split(":")[1];//this gets only id of parents;
 			attribs = attribs.substring(1, attribs.length()-2);//remove [] from edges
 			String[] tokens = attribs.split(",");//get all parents
