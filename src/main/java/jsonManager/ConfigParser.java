@@ -20,6 +20,7 @@ import org.json.simple.parser.ParseException;
 
 import KGTwitter.*;
 import jsonManagerModels.GraphEntity;
+import jsonManagerModels.Rels;
 import userDefinedFunction.UDF;
 
 /*
@@ -290,7 +291,7 @@ public class ConfigParser {
 	
 	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> getRelations() {
 		/*** MODIFY THIS LINE IF YOU HAVE SOME CUSTOM FUNCTIONS TO APPLY***/
-		UDF udf = new UDF((LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>>) this.relations, "is_parent");
+		UDF udf = new UDF((LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>>) this.relations, "None");
 		udf.adjustmentMethod();
 		return this.relations;
 	}

@@ -1,5 +1,7 @@
 package jsonManagerModels;
 
+import org.neo4j.graphdb.Node;
+
 /* Questa classe modella le Entità che formano i nodi del grafo. Ogni entità è formata
  * da un ID e dall'insieme degli attributi.
  */
@@ -45,9 +47,7 @@ public class GraphEntity implements Comparable<GraphEntity>{
 		if (result == 0)
 			result = this.getAttr().compareTo(o.getAttr());
 		return result;	
-	}
-	
-	
+	}	
 	
 	/*
 	 * Le mappe che rappresentano le relazioni saranno formate da:
