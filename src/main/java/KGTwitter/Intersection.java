@@ -24,7 +24,7 @@ public class Intersection {
 						valueAttr.add(new GraphEntity(keyInterest, allInterests.get(keyInterest).get(0)));	//basta prendere il primo elemento perchè gli altri sono uguali
 					}
 				}
-				mappa.put(new GraphEntity("all", "None:noattr"), valueAttr);
+				mappa.put(new GraphEntity("all", "None:noattr"), valueAttr); //None:attr is for Neo4J
 				resultIntersection.put(relation, mappa);
 			}
 			else {	//si fa l'intersezione solo tra gli utenti passati

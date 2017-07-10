@@ -37,7 +37,7 @@ public class UDF {
 		//Desired format: [55afc38492cffb786d83f822]/-/[55afc38492cffb786d83f811]
 		for (GraphEntity g: map2transform.keySet()){
 			//In this case all information is contained in key, so we iterate on those
-			GraphEntity newEntity = new GraphEntity(g.getId(), "None");
+			GraphEntity newEntity = new GraphEntity(g.getId(), "None:noattr");
 			ArrayList<GraphEntity> values=new ArrayList<GraphEntity>();
 			//Now we parse attribs and get the values we need to reconstruct map
 			String attribs = g.getAttr().split(":")[1];//this gets only id of parents;
@@ -46,7 +46,7 @@ public class UDF {
 			//Now we can reconstruct the map
 			for (String i :tokens)
 				if (i.length()>2)
-					values.add(new GraphEntity(i.substring(1,i.length()-2), "Noattr"));
+					values.add(new GraphEntity(i.substring(1,i.length()-2), "None:noattr"));
 			transformedMap.put(newEntity, values);
 			
 		}

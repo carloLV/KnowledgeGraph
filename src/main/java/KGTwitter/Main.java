@@ -15,7 +15,7 @@ import jsonManagerModels.GraphEntity;
 
 public class Main {
 	public static void main(String[] args) throws ParseException{
-		String [] input = new String[]{"42080693,29337915","Intersection"}; //,47948672
+		String [] input = new String[]{"42080693,29337915","No Operation"}; //,47948672
 		NodeCreator2Neo writer = new NodeCreator2Neo();
 		
 		ConfigParser cf = new ConfigParser();
@@ -53,6 +53,12 @@ public class Main {
 			Union union = new Union();
 			result = union.computeUnione(cf.getRelations(), users, numbersUsers);
 			System.out.println("\nUNION:");
+			writer.map2graph(result);
+		}
+		
+		if (input[1].equals("No Operation")){
+			result = cf.getRelations();
+			System.out.println("\nNO Operation:");
 			writer.map2graph(result);
 		}
 		
