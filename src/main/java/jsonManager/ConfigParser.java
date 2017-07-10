@@ -20,6 +20,8 @@ import org.json.simple.parser.ParseException;
 
 import KGTwitter.*;
 import jsonManagerModels.GraphEntity;
+import jsonManagerModels.Rels;
+import userDefinedFunction.UDF;
 
 /*
  * This class reads a config file and creates the map we need to manipulate.
@@ -39,8 +41,8 @@ public class ConfigParser {
 	LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap=new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
 	
 	private static final String confPath="jsonConfig.txt";
-	private static final String jsonPath="123.txt";
-
+	private static final String jsonPath="prova2utenti.json";
+	///home/bum-bum/Desktop/magistrale/BigData/Prog2/knowledgeGraphs/knowledgeGraphs/userKG.json
 
 
 	public void readFields() throws IOException, ParseException{
@@ -92,6 +94,7 @@ public class ConfigParser {
 			jsonObject.putAll((Map)object);
 		if (attribs.length!=0)
 			for (String a: attribs){
+				if (jsonObject.get(a)!=null)
 				attr+=a+":"+jsonObject.get(a).toString()+" ";
 			}
 		}
@@ -154,6 +157,7 @@ public class ConfigParser {
 				else{
 					try {
 						tmp =(JSONObject) tmp.get(nest[i]);
+						if (tmp==null) break;
 						String data=tmp.toJSONString();
 						tmp = (JSONObject) parser.parse(data);
 					} catch (ParseException e) {
@@ -220,6 +224,9 @@ public class ConfigParser {
 				else{
 					try {
 						obj =(JSONObject) obj.get(nest[i]);
+						if (obj == null) {
+							return;
+						}
 						String data=obj.toJSONString();
 						obj = (JSONObject) parser.parse(data);
 					} catch (ParseException e) {
@@ -242,12 +249,12 @@ public class ConfigParser {
 		scanner.useDelimiter("\n");
 		while (scanner.hasNext()) {
 			String linea = scanner.next();
-			linea = linea+""+scanner.next();
+			//linea = linea+""+scanner.next();
 			if (scanner.hasNext())
 				scanner.next();
-			linea = "{"+linea+"}";
+			//linea = "{"+linea+"}"; //Questa riga non serve se JSON è benformato
 			//System.out.println(linea);
-			if(!linea.equals("{\n}")){
+			if(!linea.equals("\n")){
 				JSONObject json = (JSONObject) parser.parse(linea);
 
 				//Test metodo extractEntity
@@ -283,6 +290,9 @@ public class ConfigParser {
 	}
 	
 	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> getRelations() {
-		return relations;
+		/*** MODIFY THIS LINE IF YOU HAVE SOME CUSTOM FUNCTIONS TO APPLY***/
+		UDF udf = new UDF((LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>>) this.relations, "None");
+		udf.adjustmentMethod();
+		return this.relations;
 	}
 }
