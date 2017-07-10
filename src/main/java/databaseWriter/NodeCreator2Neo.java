@@ -17,7 +17,7 @@ import jsonManagerModels.GraphEntity;
 
 public class NodeCreator2Neo {
 	
-	private static final File DB_PATH=new File("/home/bum-bum/Desktop/neo4j-community-3.2.1/data/databases/graph.db");
+	private static final File DB_PATH=new File("/Users/davinderkumar/Documents/neo4j-community-3.3.0-alpha02/data/databases/graph.db");
 	Relationship relationship;
 	RelationshipType reltype;
 	public GraphDatabaseService graphDb;
