@@ -60,9 +60,8 @@ public class NodeCreator2Neo {
 				{
 					keyEntity = graphDb.createNode(EntityLabel.ENTITY);
 					keyEntity.setProperty("EntityID",key.getId());
-					keyEntity.setProperty("Attributes",key.getAttr());
+					setAllAttributes(keyEntity, key.getAttr());
 					tx.success();
-					System.out.println("Prima trans eseguita con successo");
 				}
 
 				//now for each key, we link that to all his value
@@ -71,7 +70,7 @@ public class NodeCreator2Neo {
 					{
 						valueEntity = graphDb.createNode(EntityLabel.ENTITY);
 						valueEntity.setProperty("EntityID",value.getId());
-						valueEntity.setProperty("Attributes",value.getAttr());
+						setAllAttributes(valueEntity, value.getAttr());
 						//Find the relationship and use it
 						for (Rels r:Rels.values()){
 							if (rel.equalsIgnoreCase(r.name()))
@@ -80,11 +79,25 @@ public class NodeCreator2Neo {
 						if (keyEntity!=null && valueEntity!=null)
 							relationship = keyEntity.createRelationshipTo(valueEntity,reltype);
 						tx.success();
-						System.out.println("Seconda trans eseguita con successo");
+						//System.out.println("Seconda trans eseguita con successo");
 					}
 				}
 			}
 		}
 		graphDb.shutdown();
+	}
+	
+	//This method creates a field for each attribute in the string given in Input
+	//Creating separated fileds makes Cypher queries easier and with more possibilities 
+	private void setAllAttributes(Node entity, String attribs ){
+		//First we parse the attribs string and create an array
+		String[] tokens;
+		if (attribs.split(";").length>1)
+			tokens = attribs.split(";");
+		else tokens = new String[] {attribs};
+		//Now we create a transaction and set the properties for each node
+			for (String a:tokens)
+				if (a.split(":")[0]!=null && a.split(":")[1]!=null)
+					entity.setProperty(a.split(":")[0],a.split(":")[1]);
 	}
 }
