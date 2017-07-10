@@ -16,7 +16,11 @@ import jsonManagerModels.GraphEntity;
 
 public class Main {
 	public static void main(String[] args) throws ParseException{
-		//String [] input = new String[]{"42080693,29337915","No Operation"}; //,47948672
+		//String [] input = new String[]{"42080693,29337915","No Operation"}; 
+		//1148580931,728283781 --> prova2utenti.json
+		
+		//Scanner nel configParser, Difference
+		
 		System.out.println("OPERAZIONI ALGEBRICHE TRA KNOWLEDGE GRAPH\n");
 		Scanner terminalInput = new Scanner(System.in);
 		System.out.println("Inserisci ID degli utenti separti dalla virgola");
@@ -66,7 +70,7 @@ public class Main {
 		
 		if (operation.equals("No Operation")){
 			result = cf.getRelations();
-			System.out.println("\nNO Operation:");
+			System.out.println("\nNo Operation:");
 			writer.map2graph(result);
 		}
 		

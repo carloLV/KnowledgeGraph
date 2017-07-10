@@ -40,14 +40,13 @@ public class UDF {
 			GraphEntity newEntity = new GraphEntity(g.getId(), "None:noattr");
 			ArrayList<GraphEntity> values=new ArrayList<GraphEntity>();
 			//Now we parse attribs and get the values we need to reconstruct map
-			System.out.println(g.getAttr());
 			String attribs = g.getAttr().split(":")[1];//this gets only id of parents;
-			attribs = attribs.substring(1, attribs.length()-2);//remove [] from edges
+			attribs = attribs.substring(1, attribs.length()-1);//remove [] from edges
 			String[] tokens = attribs.split(",");//get all parents
 			//Now we can reconstruct the map
 			for (String i :tokens)
 				if (i.length()>2)
-					values.add(new GraphEntity(i.substring(1,i.length()-2), "None:noattr"));
+					values.add(new GraphEntity(i.substring(1,i.length()-1), "None:noattr"));
 			transformedMap.put(newEntity, values);
 			
 		}

@@ -39,7 +39,7 @@ public class ConfigParser {
 
 	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> relations =  new LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> >();
 	LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap=new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
-	
+
 	private static final String confPath="jsonConfig.txt";
 	private static final String jsonPath="prova2utenti.json";
 	///home/bum-bum/Desktop/magistrale/BigData/Prog2/knowledgeGraphs/knowledgeGraphs/userKG.json
@@ -62,7 +62,7 @@ public class ConfigParser {
 
 			//This is the flag of relation. We will need it for neo4j graph creation
 			String relation = rel.split(":")[1];
-			
+
 			//This list has in pos 0 the json field that represents the key (could be nested); the other field are the attributes
 			ArrayList<String> keyToExtract = new ArrayList<String>();
 			keyToExtract.add(key.split(",")[0].split(":")[1]); //This gets field for key
@@ -76,12 +76,12 @@ public class ConfigParser {
 			for (int i=0;i<value.split(",")[1].split(":")[1].split("-").length; i++)
 				valueToExtract.add(value.split(",")[1].split(":")[1].split("-")[i]);
 			/************************************** fin qui ok: l'output è*/
-		
+
 			//printFinalMap(json2map(keyToExtract, valueToExtract));
 			this.relations.put(relation, json2map(keyToExtract, valueToExtract));
 			System.out.println("Ho inserito la relazione " + relation);
 			printFinalMap(this.relations.get(relation));
-			
+
 			///****  OK FIN QUI È FUNZIONANTE***///
 		}
 	}
@@ -92,18 +92,19 @@ public class ConfigParser {
 		if (object instanceof Map){
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.putAll((Map)object);
-		if (attribs.length!=0)
-			if (attribs[0].equals("None"))
-				return "None:noattr";
-			for (String a: attribs){
-				if (jsonObject.get(a)!=null)
-				attr+=a+":"+jsonObject.get(a).toString()+";"; //attributes separated by ,
+			if (attribs.length!=0){
+				if (attribs[0].equals("None"))
+					return "None:noattr";
+				for (String a: attribs){
+					if (jsonObject.get(a)!=null)
+						attr+=a+":"+jsonObject.get(a).toString()+";"; //attributes separated by ,
+				}
 			}
 		}
 		return attr;
 	}
 
-	
+
 	/*****************************************************************************************************/
 	/***** This method, given a JSON line {...} extracts an array of GraphEntity *************************/
 	/***** The this method will be called twice: 1 time for the key extracition; 2 time for values *******/
@@ -179,10 +180,10 @@ public class ConfigParser {
 
 		System.out.println("Attivata funzione su mappa");
 		JSONObject obj = new JSONObject();
-		
+
 		if (object instanceof Map)
 			obj.putAll((Map)object);
-		
+
 		JSONParser parser = new JSONParser();
 		String[] nest = null;
 		//Suppose that all attributes are at the same level of id
@@ -252,8 +253,8 @@ public class ConfigParser {
 		while (scanner.hasNext()) {
 			String linea = scanner.next();
 			//linea = linea+""+scanner.next();
-			if (scanner.hasNext())
-				scanner.next();
+			//if (scanner.hasNext())
+				//scanner.next();
 			//linea = "{"+linea+"}"; //Questa riga non serve se JSON è benformato
 			//System.out.println(linea);
 			if(!linea.equals("\n")){
@@ -290,11 +291,11 @@ public class ConfigParser {
 			System.out.println(k + "/-/" + inter+"]");
 		}
 	}
-	
+
 	public Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> getRelations() {
 		//create the Scanner
 		Scanner terminalInput = new Scanner(System.in);
-		
+
 		System.out.println("Inserisci la relazione su cui applicare UDF. Se non hai UDF scrivi None");
 		String relation = terminalInput.nextLine();
 		/*** MODIFY THIS LINE IF YOU HAVE SOME CUSTOM FUNCTIONS TO APPLY***/
