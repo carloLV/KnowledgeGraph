@@ -93,9 +93,11 @@ public class ConfigParser {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.putAll((Map)object);
 		if (attribs.length!=0)
+			if (attribs[0].equals("None"))
+				return "None:noattr";
 			for (String a: attribs){
 				if (jsonObject.get(a)!=null)
-				attr+=a+":"+jsonObject.get(a).toString()+" ";
+				attr+=a+":"+jsonObject.get(a).toString()+";"; //attributes separated by ,
 			}
 		}
 		return attr;
