@@ -40,7 +40,17 @@ public class Difference {
 				}
 			}
 			LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> mappa = new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
-			mappa.put(new GraphEntity(userAttr.getId(), userAttr.getAttr()), difference);
+			System.out.println(userAttr.getId());
+			System.out.println("attributi: "+userAttr.getAttr().length());
+			String attrUser = null;
+			if (userAttr.getAttr().length() == 0){
+				attrUser = "None:noattr";
+			}
+			else{
+				//TODO da definire, nel nostro caso non ci sono attributi
+			}
+			
+			mappa.put(new GraphEntity(userAttr.getId(), attrUser), difference);
 			resultDifference.put(relation, mappa);
 		}
 		return resultDifference;
