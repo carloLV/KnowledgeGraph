@@ -43,6 +43,8 @@ public class Main {
 			result = intersection.computeIntesection(cf.getRelations(), users, numbersUsers);
 			System.out.println("\nINTERSECTION:");		
 			writer.map2graph(result);
+			System.out.println("\nOperation terminated\n");
+
 		}
 		
 		if (operation.equals("Difference")){
@@ -50,6 +52,8 @@ public class Main {
 			result = difference.computeDifference(cf.getRelations(), users, numbersUsers);
 			System.out.println("\nDIFFERENCE");
 			writer.map2graph(result);
+			System.out.println("\nOperation terminated\n");
+			
 		}
 		
 		if (operation.equals("Union")){
@@ -57,13 +61,17 @@ public class Main {
 			result = union.computeUnione(cf.getRelations(), users, numbersUsers);
 			System.out.println("\nUNION:");
 			writer.map2graph(result);
+			System.out.println("\nOperation terminated\n");
+
 		}
 		//56350fc892cffb17e4c2841d
 		
 		if (operation.equals("no")){
 			result = cf.getRelations();
 			System.out.println("\nNo Operation:");
-			//writer.map2graph(result);
+			writer.map2graph(result);
+			System.out.println("\nOperation terminated\n");
+
 		}
 		
 		//serve per stampare il risultato delle operazioni
@@ -77,16 +85,16 @@ public class Main {
 //			}
 //		}
 		
-		for (String relation : result.keySet()){
-			System.out.println(relation);
-			for (Entry<GraphEntity, ArrayList<GraphEntity>> entry : result.get(relation).entrySet()) {
-				System.out.print(entry.getKey().getId()+","+entry.getKey().getAttr()+" ");
-				for (GraphEntity v : entry.getValue()){
-					System.out.print(v.getId()+","+v.getAttr()+" ");
-				}
-				System.out.println();
-			}
-		}
+//		for (String relation : result.keySet()){
+//			System.out.println(relation);
+//			for (Entry<GraphEntity, ArrayList<GraphEntity>> entry : result.get(relation).entrySet()) {
+//				System.out.print(entry.getKey().getId()+","+entry.getKey().getAttr()+" ");
+//				for (GraphEntity v : entry.getValue()){
+//					System.out.print(v.getId()+","+v.getAttr()+" ");
+//				}
+//				System.out.println();
+//			}
+//		}
 	}
 }
 

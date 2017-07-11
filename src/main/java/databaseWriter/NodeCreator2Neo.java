@@ -16,8 +16,8 @@ import jsonManagerModels.*;
 
 public class NodeCreator2Neo {
 	
-	private static final File DB_PATH=new File("/Users/davinderkumar/Documents/neo4j-community-3.3.0-alpha02/data/databases/graph.db");
-	//private static final File DB_PATH=new File("/home/bum-bum/Desktop/neo4j-community-3.2.1/data/databases/graph.db");
+	//private static final File DB_PATH=new File("/Users/davinderkumar/Documents/neo4j-community-3.3.0-alpha02/data/databases/graph.db");
+	private static final File DB_PATH=new File("/home/bum-bum/Desktop/neo4j-community-3.2.1/data/databases/graph.db");
 	Relationship relationship;
 	RelationshipType reltype;
 
@@ -78,7 +78,6 @@ public class NodeCreator2Neo {
 						if (keyEntity!=null && valueEntity!=null)
 							relationship = keyEntity.createRelationshipTo(valueEntity,reltype);
 						tx.success();
-						//System.out.println("Seconda trans eseguita con successo");
 					}
 				}
 			}
@@ -95,8 +94,8 @@ public class NodeCreator2Neo {
 			tokens = attribs.split(";");
 		else tokens = new String[] {attribs};
 		//Now we create a transaction and set the properties for each node
-			for (String a:tokens)
-				if (a.split(":")[0]!=null && a.split(":")[1]!=null)
-					entity.setProperty(a.split(":")[0],a.split(":")[1]);
+			for (String token:tokens)
+				if (token.split(":")[0]!=null && token.split(":")[1]!=null)
+					entity.setProperty(token.split(":")[0],token.split(":")[1]);
 	}
 }

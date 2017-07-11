@@ -45,9 +45,7 @@ public class UDF {
 				}
 			transformedMap.put(newEntity, values);
 		}
-		//ArrayList<GraphEntity> interes= transformedMap.get(new GraphEntity("56350fc892cffb17e4c2841d", "None:noattr"));
 		relations.put(workOn, transformedMap);
-		//System.out.println("ciao\n\n\n"+relations.get(workOn).get(new GraphEntity("56350fc892cffb17e4c2841d", "None:noattr")));
 		return relations;
 	}
 
