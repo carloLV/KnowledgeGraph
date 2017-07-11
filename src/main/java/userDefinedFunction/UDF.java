@@ -2,6 +2,7 @@ package userDefinedFunction;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
 import jsonManagerModels.GraphEntity;
 
@@ -15,20 +16,13 @@ import jsonManagerModels.GraphEntity;
 
 
 public class UDF {
-	
-	LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> relations;
-	String workOn;
-	
-	public UDF(LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> rel, String workOn){
-		this.relations = rel; //we pass the map and the relation on which we want to perform some adjustment
-		this.workOn = workOn;
-	}
+
 	
 	//This is the method that operates the adjustment
-	public void adjustmentMethod(){
-		if (this.workOn.equals("None"))//In case no UDF are required we just pass None instead of relation
-			return;
-		LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> map2transform = this.relations.get(workOn);
+	public LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> adjustmentMethod(LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> relations, String workOn){
+		if (workOn.equals("None"))//In case no UDF are required we just pass None instead of relation
+			return relations;
+		LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> map2transform = relations.get(workOn);
 		LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> transformedMap = new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
 		//Now we have map and start working on it.
 		/*** MODIFY THIS PART TO CHANGE BEHAVIOUR***/
@@ -41,16 +35,20 @@ public class UDF {
 			ArrayList<GraphEntity> values=new ArrayList<GraphEntity>();
 			//Now we parse attribs and get the values we need to reconstruct map
 			String attribs = g.getAttr().split(":")[1];//this gets only id of parents;
-			attribs = attribs.substring(1, attribs.length()-1);//remove [] from edges
+			attribs = attribs.substring(1, attribs.length()-2);//remove [] from edges
+			
 			String[] tokens = attribs.split(",");//get all parents
 			//Now we can reconstruct the map
-			for (String i :tokens)
-				if (i.length()>2)
-					values.add(new GraphEntity(i.substring(1,i.length()-1), "None:noattr"));
+			for (String parent : tokens)
+				if (parent != null && parent.length()>2){
+					values.add(new GraphEntity(parent.substring(1,parent.length()-1), "None:noattr"));
+				}
 			transformedMap.put(newEntity, values);
-			
 		}
-		this.relations.put(workOn, transformedMap);
+		//ArrayList<GraphEntity> interes= transformedMap.get(new GraphEntity("56350fc892cffb17e4c2841d", "None:noattr"));
+		relations.put(workOn, transformedMap);
+		//System.out.println("ciao\n\n\n"+relations.get(workOn).get(new GraphEntity("56350fc892cffb17e4c2841d", "None:noattr")));
+		return relations;
 	}
 
 }
