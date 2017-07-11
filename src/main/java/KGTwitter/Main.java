@@ -63,19 +63,8 @@ public class Main {
 		if (operation.equals("no")){
 			result = cf.getRelations();
 			System.out.println("\nNo Operation:");
-			//writer.map2graph(result);
+			writer.map2graph(result);
 		}
-		
-		//serve per stampare il risultato delle operazioni
-//		for (String relation : result.keySet()){
-//			System.out.println(relation);
-//			for (Entry<GraphEntity, ArrayList<GraphEntity>> entry : result.get(relation).entrySet()) {
-//				System.out.println(entry.getKey().getId()+","+entry.getKey().getAttr());
-//				for (GraphEntity v : entry.getValue()){
-//					System.out.println(v.getId()+","+v.getAttr());
-//				}
-//			}
-//		}
 		
 		for (String relation : result.keySet()){
 			System.out.println(relation);
