@@ -23,7 +23,6 @@ public class NodeCreator2Neo {
 
 	public GraphDatabaseService graphDb;
 
-
 	public NodeCreator2Neo(){
 		graphDb = new GraphDatabaseFactory().newEmbeddedDatabase( DB_PATH );
 		registerShutdownHook( graphDb );
