@@ -22,7 +22,7 @@ public class Main {
 		Scanner terminalInput = new Scanner(System.in);
 		System.out.println("Inserisci ID degli utenti separti dalla virgola");
 		String utenti = terminalInput.nextLine();
-		System.out.println("Inserisci l'operazione da eseguire");
+		System.out.println("Inserisci l'operazione da eseguire(Intersection, Difference, Union, No Operation)");
 		String operation = terminalInput.nextLine();
 		
 		NodeCreator2Neo writer = new NodeCreator2Neo();		
@@ -32,7 +32,6 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	
 		
 		int numbersUsers = StringUtils.countMatches(utenti, ",") + 1;
 		String[] users = utenti.split(",");
@@ -59,21 +58,33 @@ public class Main {
 			System.out.println("\nUNION:");
 			writer.map2graph(result);
 		}
+		//56350fc892cffb17e4c2841d
 		
-		if (operation.equals("No Operation")){
+		if (operation.equals("no")){
 			result = cf.getRelations();
 			System.out.println("\nNo Operation:");
-			writer.map2graph(result);
+			//writer.map2graph(result);
 		}
 		
 		//serve per stampare il risultato delle operazioni
+//		for (String relation : result.keySet()){
+//			System.out.println(relation);
+//			for (Entry<GraphEntity, ArrayList<GraphEntity>> entry : result.get(relation).entrySet()) {
+//				System.out.println(entry.getKey().getId()+","+entry.getKey().getAttr());
+//				for (GraphEntity v : entry.getValue()){
+//					System.out.println(v.getId()+","+v.getAttr());
+//				}
+//			}
+//		}
+		
 		for (String relation : result.keySet()){
 			System.out.println(relation);
 			for (Entry<GraphEntity, ArrayList<GraphEntity>> entry : result.get(relation).entrySet()) {
-				System.out.println(entry.getKey().getId()+","+entry.getKey().getAttr());
+				System.out.print(entry.getKey().getId()+","+entry.getKey().getAttr()+" ");
 				for (GraphEntity v : entry.getValue()){
-					System.out.println(v.getId()+","+v.getAttr());
+					System.out.print(v.getId()+","+v.getAttr()+" ");
 				}
+				System.out.println();
 			}
 		}
 	}

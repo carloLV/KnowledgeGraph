@@ -299,8 +299,7 @@ public class ConfigParser {
 		System.out.println("Inserisci la relazione su cui applicare UDF. Se non hai UDF scrivi None");
 		String relation = terminalInput.nextLine();
 		/*** MODIFY THIS LINE IF YOU HAVE SOME CUSTOM FUNCTIONS TO APPLY***/
-		UDF udf = new UDF((LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>>) this.relations, relation);
-		udf.adjustmentMethod();
-		return this.relations;
+		UDF udf = new UDF();
+		return udf.adjustmentMethod((LinkedHashMap<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>>) this.relations, relation);
 	}
 }
