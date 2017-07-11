@@ -107,7 +107,7 @@ public class ConfigParser {
 
 	/*****************************************************************************************************/
 	/***** This method, given a JSON line {...} extracts an array of GraphEntity *************************/
-	/***** The this method will be called twice: 1 time for the key extracition; 2 time for values *******/
+	/***** The this method will be called twice: 1 time for the key extraction; 2 time for values *******/
 	/*****************************************************************************************************/
 
 	public ArrayList<GraphEntity> extractEntity(JSONObject obj, ArrayList<String> info){

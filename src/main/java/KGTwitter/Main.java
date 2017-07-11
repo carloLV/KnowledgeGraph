@@ -17,14 +17,14 @@ import jsonManagerModels.GraphEntity;
 public class Main {
 	public static void main(String[] args) throws ParseException{
 		//1148580931,728283781 --> prova2utenti.json
-		
+
 		System.out.println("OPERAZIONI ALGEBRICHE TRA KNOWLEDGE GRAPH\n");
 		Scanner terminalInput = new Scanner(System.in);
 		System.out.println("Inserisci ID degli utenti separti dalla virgola");
 		String utenti = terminalInput.nextLine();
 		System.out.println("Inserisci l'operazione da eseguire(Intersection, Difference, Union, No Operation)");
 		String operation = terminalInput.nextLine();
-		
+
 		NodeCreator2Neo writer = new NodeCreator2Neo();		
 		ConfigParser cf = new ConfigParser();
 		try {
@@ -32,40 +32,46 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		int numbersUsers = StringUtils.countMatches(utenti, ",") + 1;
 		String[] users = utenti.split(",");
 		Map<String, LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>> result = null;
-		
+
 		//OPERATIONS
 		if (operation.equals("Intersection")){
 			Intersection intersection = new Intersection();
 			result = intersection.computeIntesection(cf.getRelations(), users, numbersUsers);
 			System.out.println("\nINTERSECTION:");		
 			writer.map2graph(result);
+			System.out.println("\nOperation terminated\n");
+
 		}
-		
+
 		if (operation.equals("Difference")){
 			Difference difference = new Difference();
 			result = difference.computeDifference(cf.getRelations(), users, numbersUsers);
 			System.out.println("\nDIFFERENCE");
 			writer.map2graph(result);
+			System.out.println("\nOperation terminated\n");
+
 		}
-		
+
 		if (operation.equals("Union")){
 			Union union = new Union();
 			result = union.computeUnione(cf.getRelations(), users, numbersUsers);
 			System.out.println("\nUNION:");
 			writer.map2graph(result);
+			System.out.println("\nOperation terminated\n");
+
 		}
 		//56350fc892cffb17e4c2841d
-		
+
 		if (operation.equals("no")){
 			result = cf.getRelations();
 			System.out.println("\nNo Operation:");
 			writer.map2graph(result);
 		}
-		
+
 		for (String relation : result.keySet()){
 			System.out.println(relation);
 			for (Entry<GraphEntity, ArrayList<GraphEntity>> entry : result.get(relation).entrySet()) {
