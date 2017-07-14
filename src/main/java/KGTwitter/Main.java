@@ -41,27 +41,27 @@ public class Main {
 		if (operation.equals("Intersection")){
 			Intersection intersection = new Intersection();
 			result = intersection.computeIntesection(cf.getRelations(), users, numbersUsers);
-			System.out.println("\nINTERSECTION:");		
+			System.out.print("\nINTERSECTION:");		
 			writer.map2graph(result);
-			System.out.println("\nOperation terminated\n");
+			System.out.print("\nOperation terminated\n");
 
 		}
 
 		if (operation.equals("Difference")){
 			Difference difference = new Difference();
 			result = difference.computeDifference(cf.getRelations(), users, numbersUsers);
-			System.out.println("\nDIFFERENCE");
+			System.out.print("\nDIFFERENCE");
 			writer.map2graph(result);
-			System.out.println("\nOperation terminated\n");
+			System.out.print("\nOperation terminated\n");
 
 		}
 
 		if (operation.equals("Union")){
 			Union union = new Union();
 			result = union.computeUnione(cf.getRelations(), users, numbersUsers);
-			System.out.println("\nUNION:");
+			System.out.print("\nUNION:");
 			writer.map2graph(result);
-			System.out.println("\nOperation terminated\n");
+			System.out.print("\nOperation terminated\n");
 
 		}
 		//56350fc892cffb17e4c2841d

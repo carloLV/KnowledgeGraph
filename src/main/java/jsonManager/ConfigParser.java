@@ -41,7 +41,7 @@ public class ConfigParser {
 	LinkedHashMap<GraphEntity, ArrayList<GraphEntity>> jsonMap=new LinkedHashMap<GraphEntity, ArrayList<GraphEntity>>();
 
 	private static final String confPath="jsonConfig.txt";
-	private static final String jsonPath="prova2utenti.json";
+	private static final String jsonPath="/Users/davinderkumar/Desktop/knowledgeGraphs/userKG.json";
 	///home/bum-bum/Desktop/magistrale/BigData/Prog2/knowledgeGraphs/knowledgeGraphs/userKG.json
 
 
@@ -80,7 +80,7 @@ public class ConfigParser {
 			//printFinalMap(json2map(keyToExtract, valueToExtract));
 			this.relations.put(relation, json2map(keyToExtract, valueToExtract));
 			System.out.println("Ho inserito la relazione " + relation);
-			printFinalMap(this.relations.get(relation));
+			//printFinalMap(this.relations.get(relation));
 
 			///****  OK FIN QUI È FUNZIONANTE***///
 		}
